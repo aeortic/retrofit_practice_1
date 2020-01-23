@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.retrofit_practice_1.adapter.CustomAdapter;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.indeterminateBar);
         progressBar.setVisibility(View.VISIBLE);
 
+        final TextView baconIdView = findViewById(R.id.baconIdView);
+
         /* Create handler for the Retrofit interface */
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         call = service.getAllPhotos();
@@ -66,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
                 HashMap<String, Integer> actors = response.body().getActors();
                 Integer baconId = actors.get("Kevin Bacon");
 
-                Toast.makeText(MainActivity.this, "Kevin Bacon's id is "+baconId, Toast.LENGTH_SHORT).show();
+                baconIdView.setText("Kevin Bacon's id is "+baconId);
+
             }
 
             @Override
