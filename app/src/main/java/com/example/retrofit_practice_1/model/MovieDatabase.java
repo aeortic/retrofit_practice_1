@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class MovieDatabase {
     @SerializedName("actors")
-    private HashMap<String, Integer> actors;
+    private JsonElement actors;
     @SerializedName("movies")
     private JsonElement movies;
 
@@ -19,11 +19,6 @@ public class MovieDatabase {
     }
 
     public HashMap<String, Integer> getActors() {
-        return actors;
-    }
-
-    public void setActors(JsonElement actors) {
-
         HashMap<String, Integer> actorMap = new HashMap<String, Integer>();
 
         for (Map.Entry<String, JsonElement> actor: actors.getAsJsonObject().entrySet()) {
@@ -33,7 +28,12 @@ public class MovieDatabase {
             actorMap.put(actorName, actorId);
         }
 
-        this.actors = actorMap;
+        return actorMap;
+    }
+
+    public void setActors(JsonElement actors) {
+
+        this.actors = actors;
     }
 
     public JsonElement getMovies() {

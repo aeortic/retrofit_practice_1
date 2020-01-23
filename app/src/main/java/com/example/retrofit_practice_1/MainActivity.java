@@ -10,10 +10,15 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.retrofit_practice_1.adapter.CustomAdapter;
+import com.example.retrofit_practice_1.model.MovieDatabase;
 import com.example.retrofit_practice_1.model.RetroPhoto;
 import com.example.retrofit_practice_1.network.GetDataService;
+import com.example.retrofit_practice_1.network.GetMovieService;
 import com.example.retrofit_practice_1.network.RetrofitClientInstance;
+import com.example.retrofit_practice_1.network.RetrofitMovieInstance;
+import com.google.gson.JsonElement;
 
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -25,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private Call<List<RetroPhoto>> call;
+    private Call<MovieDatabase> movieCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +54,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<RetroPhoto>> call, Throwable t) {
                 progressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT);
+                Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        GetMovieService movieService = RetrofitMovieInstance.getRetrofitInstance().create(GetMovieService.class);
+        movieCall = movieService.getSmallDataSet();
+        movieCall.enqueue(new Callback<MovieDatabase>() {
+            @Override
+            public void onResponse(Call<MovieDatabase> call, Response<MovieDatabase> response) {
+                HashMap<String, Integer> actors = response.body().getActors();
+                Integer baconId = actors.get("Kevin Bacon");
+
+                Toast.makeText(MainActivity.this, "Kevin Bacon's id is "+baconId, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<MovieDatabase> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Something went wrong with the movie call", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -65,5 +88,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         call.cancel();
+        movieCall.cancel();
     }
 }

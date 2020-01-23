@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitMovieInstance {
 
     private static Retrofit retrofit;
-    private static final String BASE_URL = "http://movie-database-server.appspot.com";
+    private static final String BASE_URL = "https://movie-database-server.appspot.com";
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
