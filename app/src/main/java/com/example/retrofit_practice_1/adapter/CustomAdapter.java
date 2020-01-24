@@ -19,10 +19,10 @@ import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
 
-    private List<RetroPhoto> dataList;
+    private List<String> dataList;
     private Context context;
 
-    public CustomAdapter(Context context, List<RetroPhoto> dataList) {
+    public CustomAdapter(Context context, List<String> dataList) {
         this.context = context;
         this.dataList = dataList;
     }
@@ -32,14 +32,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         public final View mView;
 
         TextView txtTitle;
-        private ImageView coverImage;
 
         CustomViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
 
             txtTitle = mView.findViewById(R.id.title);
-            coverImage = mView.findViewById(R.id.coverImage);
         }
     }
 
@@ -53,15 +51,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 
     @Override
     public void onBindViewHolder(CustomViewHolder holder, int position) {
-        holder.txtTitle.setText(dataList.get(position).getTitle());
-
-        Picasso.Builder builder = new Picasso.Builder(context);
-        builder.downloader(new OkHttp3Downloader(context));
-        builder.build()
-                .load(dataList.get(position).getThumbnailUrl())
-                .placeholder((R.drawable.ic_launcher_background))
-                .error(R.drawable.ic_launcher_background)
-                .into(holder.coverImage);
+        holder.txtTitle.setText(dataList.get(position));
     }
 
     @Override
