@@ -94,8 +94,8 @@ public class MovieDatabase {
         return this.movieMap;
     }
 
-    public List<String> getMoviesByActorId(Integer actorId) {
-        List<String> filmCareer = new ArrayList<String>();
+    public List<Movie> getMoviesByActorId(Integer actorId) {
+        List<Movie> filmCareer = new ArrayList<>();
 
         HashMap<Integer, Movie> movieMap = getMovies();
 
@@ -106,12 +106,23 @@ public class MovieDatabase {
             Movie movie = (Movie)movieElement.getValue();
             for (Integer actorInMovie: movie.actors) {
                 if (actorInMovie.equals(actorId)) {
-                    filmCareer.add(movie.title);
+                    filmCareer.add(movie);
                 }
             }
         }
 
         return filmCareer;
+    }
+
+    /* A convenience method to only return the titles as a list */
+    public List<String> getTitlesByActorId(Integer actorId) {
+        List<String> filmTitles = new ArrayList<>();
+        List<Movie> filmCareer = getMoviesByActorId(actorId);
+        for (Movie movie: filmCareer) {
+            filmTitles.add(movie.title);
+        }
+
+        return filmTitles;
     }
 
     public void setMovies(JsonElement movies) {

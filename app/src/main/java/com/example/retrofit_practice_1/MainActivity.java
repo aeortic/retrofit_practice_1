@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
                 filmCareerTitleView.setText("Kevin Bacon's career consists of these films:");
 
-                List<String> filmCareer = response.body().getMoviesByActorId(baconId);
+                List<String> filmCareer = response.body().getTitlesByActorId(baconId);
 
                 generateDataList(filmCareer);
 
