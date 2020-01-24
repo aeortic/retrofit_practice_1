@@ -23,22 +23,29 @@ public class MovieDatabase {
     @SerializedName("movies")
     private JsonElement movies;
 
+    private HashMap<String, Integer> actorMap;
+    private HashMap<Integer, Movie> movieMap;
+
     public MovieDatabase(JsonElement actors, JsonElement movies) {
         this.setActors(actors);
         this.setMovies(movies);
     }
 
     public HashMap<String, Integer> getActors() {
-        HashMap<String, Integer> actorMap = new HashMap<String, Integer>();
+        if (this.actorMap != null) {
+            return this.actorMap;
+        }
+
+        this.actorMap = new HashMap<String, Integer>();
 
         for (Map.Entry<String, JsonElement> actor: actors.getAsJsonObject().entrySet()) {
             Integer actorId = Integer.parseInt(actor.getKey());
             String actorName = actor.getValue().getAsString();
 
-            actorMap.put(actorName, actorId);
+            this.actorMap.put(actorName, actorId);
         }
 
-        return actorMap;
+        return this.actorMap;
     }
 
     public void setActors(JsonElement actors) {
@@ -60,7 +67,11 @@ public class MovieDatabase {
     }
 
     public HashMap<Integer, Movie> getMovies() {
-        HashMap<Integer, Movie> movieMap = new HashMap<Integer, Movie>();
+        if (this.movieMap != null) {
+            return this.movieMap;
+        }
+
+        this.movieMap = new HashMap<Integer, Movie>();
 
         for (Map.Entry<String, JsonElement> movieElement: movies.getAsJsonObject().entrySet()) {
 
@@ -80,7 +91,7 @@ public class MovieDatabase {
             movieMap.put(movieId, movie);
         }
 
-        return movieMap;
+        return this.movieMap;
     }
 
     public List<String> getMoviesByActorId(Integer actorId) {
@@ -99,8 +110,6 @@ public class MovieDatabase {
                 }
             }
         }
-
-
 
         return filmCareer;
     }
