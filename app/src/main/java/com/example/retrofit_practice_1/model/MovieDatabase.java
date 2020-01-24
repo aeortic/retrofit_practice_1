@@ -23,7 +23,7 @@ public class MovieDatabase {
     @SerializedName("movies")
     private JsonElement movies;
 
-    private HashMap<String, Integer> actorMap;
+    private HashMap<Integer, String> actorMap;
     private HashMap<Integer, Movie> movieMap;
 
     public MovieDatabase(JsonElement actors, JsonElement movies) {
@@ -31,21 +31,40 @@ public class MovieDatabase {
         this.setMovies(movies);
     }
 
-    public HashMap<String, Integer> getActors() {
+    public HashMap<Integer, String> getActors() {
         if (this.actorMap != null) {
             return this.actorMap;
         }
 
-        this.actorMap = new HashMap<String, Integer>();
+        this.actorMap = new HashMap<Integer, String>();
 
         for (Map.Entry<String, JsonElement> actor: actors.getAsJsonObject().entrySet()) {
             Integer actorId = Integer.parseInt(actor.getKey());
             String actorName = actor.getValue().getAsString();
 
-            this.actorMap.put(actorName, actorId);
+            this.actorMap.put(actorId, actorName);
         }
 
         return this.actorMap;
+    }
+
+    public Integer getActorIdFromName(String name) {
+
+        Integer actorId = 0;
+
+        HashMap<Integer, String> actorMap = getActors();
+
+        Iterator actorIterator = actorMap.entrySet().iterator();
+
+        while(actorIterator.hasNext()) {
+            Map.Entry actorElement = (Map.Entry)actorIterator.next();
+            String actorName = (String)actorElement.getValue();
+            if (actorName.equals(name)) {
+                return (Integer)actorElement.getKey();
+            }
+        }
+
+        return actorId;
     }
 
     public void setActors(JsonElement actors) {
@@ -127,5 +146,26 @@ public class MovieDatabase {
 
     public void setMovies(JsonElement movies) {
         this.movies = movies;
+    }
+
+    public List<String> getCostars(Integer actorId) {
+        List<Movie> filmCareer = getMoviesByActorId(actorId);
+        List<Integer> costarIds = new ArrayList<>();
+
+        for(Movie movie: filmCareer) {
+            for (Integer costarId: movie.actors) {
+                if (!costarId.equals(actorId) && !costarIds.contains(costarId)) {
+                    costarIds.add(costarId);
+                }
+            }
+        }
+
+        List<String> costarNames = new ArrayList<>();
+
+        for(Integer costarId: costarIds) {
+            costarNames.add(this.getActors().get(costarId));
+        }
+
+        return costarNames;
     }
 }

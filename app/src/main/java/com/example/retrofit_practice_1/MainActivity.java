@@ -45,8 +45,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MovieDatabase> call, Response<MovieDatabase> response) {
                 progressBar.setVisibility(View.INVISIBLE);
-                HashMap<String, Integer> actors = response.body().getActors();
-                Integer baconId = actors.get("Kevin Bacon");
+                Integer baconId = response.body().getActorIdFromName("Kevin Bacon");
 
                 Toast.makeText(MainActivity.this, "Kevin Bacon's id is "+baconId, Toast.LENGTH_SHORT).show();
 
@@ -54,8 +53,10 @@ public class MainActivity extends AppCompatActivity {
 
                 List<String> filmCareer = response.body().getTitlesByActorId(baconId);
 
-                generateDataList(filmCareer);
+                List<String> costars = response.body().getCostars(baconId);
 
+                generateDataList(filmCareer);
+                
             }
 
             @Override
