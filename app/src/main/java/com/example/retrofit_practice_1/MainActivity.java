@@ -19,6 +19,7 @@ import com.example.retrofit_practice_1.network.RetrofitClientInstance;
 import com.example.retrofit_practice_1.network.RetrofitMovieInstance;
 import com.google.gson.JsonElement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -70,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
                 Integer baconId = actors.get("Kevin Bacon");
 
                 baconIdView.setText("Kevin Bacon's id is "+baconId);
+
+                List<String> filmCareer = response.body().getMoviesByActorId(baconId);
 
             }
 
