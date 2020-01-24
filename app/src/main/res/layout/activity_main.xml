@@ -7,11 +7,10 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/baconIdView"
+        android:id="@+id/filmCareerTitleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="bacon id"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/customRecyclerView"
@@ -21,7 +20,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/baconIdView"
+        app:layout_constraintTop_toBottomOf="@id/filmCareerTitleView"
         app:layout_constraintVertical_bias="0.0" />
 
     <ProgressBar
